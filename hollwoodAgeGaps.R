@@ -3,16 +3,39 @@
 # Read in with tidytuesdayR package 
 # Install from CRAN via: install.packages("tidytuesdayR")
 # This loads the readme and all the datasets for the week of interest
-
-# Either ISO-8601 date or year/week works!
-
-tuesdata <- tidytuesdayR::tt_load('2023-02-14')
-tuesdata <- tidytuesdayR::tt_load(2023, week = 7)
-
-age_gaps <- tuesdata$age_gaps
-
-# Or read in the data manually
-
 age_gaps <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-02-14/age_gaps.csv')
 
-head(age_gaps)
+library(dplyr)
+
+# Assuming your data frame is called 'age_gaps'
+# and the categorical variables are called 'character_1_gender' and 'character_2_gender'
+# and the quantitative variable is called 'age_difference'
+# and the levels are 'man' and 'woman'
+
+age_gaps <- age_gaps %>%
+  mutate(combined_group = ifelse(character_1_gender == "man" & character_2_gender == "woman", "man_woman",
+                                 ifelse(character_1_gender == "woman" & character_2_gender == "man", "man_woman",
+                                        ifelse(character_1_gender == "man" & character_2_gender == "man", "man_man",
+                                               ifelse(character_1_gender == "woman" & character_2_gender == "woman", "woman_woman", NA)))))
+
+
+decade_breaks <- seq(1930, 2020, by = 10)
+
+
+# Create a vector of labels representing the decades
+decade_labels <- paste0(decade_breaks, "s")
+
+# Create a new variable 'decade' that bins the release_year variable into decades
+age_gaps$decade <- cut(age_gaps$release_year, breaks = c(decade_breaks, Inf), labels = decade_labels, include.lowest = TRUE)
+
+
+result <- age_gaps %>%
+  group_by(decade) %>%
+  summarise(mean_age_difference = mean(age_difference, na.rm = TRUE))
+  
+
+
+plot(age_gaps$decade, age_gaps$age_difference)
+print(result)
+
+
