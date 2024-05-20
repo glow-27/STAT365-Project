@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 13 Bayesian Analysis of Poisson Count Data | An Introduction to Bayesian Reasoning and Methods</title>
+  <meta name="description" content="This textbook presents an introduction to Bayesian reasoning and methods" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 13 Bayesian Analysis of Poisson Count Data | An Introduction to Bayesian Reasoning and Methods" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This textbook presents an introduction to Bayesian reasoning and methods" />
+  <meta name="github-repo" content="rstudio/bayesian-reasoning-and-methods" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 13 Bayesian Analysis of Poisson Count Data | An Introduction to Bayesian Reasoning and Methods" />
+  
+  <meta name="twitter:description" content="This textbook presents an introduction to Bayesian reasoning and methods" />
+  
+
+<meta name="author" content="Kevin Ross" />
+
+
+<meta name="date" content="2022-03-04" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="model-comparison.html"/>
+<link rel="next" href="multi-parameter.html"/>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introductory Example</a></li>
+<li class="chapter" data-level="2" data-path="ideas.html"><a href="ideas.html"><i class="fa fa-check"></i><b>2</b> Ideas of Bayesian Reasoning</a></li>
+<li class="chapter" data-level="3" data-path="interpretations.html"><a href="interpretations.html"><i class="fa fa-check"></i><b>3</b> Interpretations of Probability and Statistics</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="randomness.html"><a href="randomness.html"><i class="fa fa-check"></i><b>3.1</b> Instances of randomness</a></li>
+<li class="chapter" data-level="3.2" data-path="interpretations-of-probability.html"><a href="interpretations-of-probability.html"><i class="fa fa-check"></i><b>3.2</b> Interpretations of probability</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="interpretations-of-probability.html"><a href="interpretations-of-probability.html#rel-freq"><i class="fa fa-check"></i><b>3.2.1</b> Long run relative frequency</a></li>
+<li class="chapter" data-level="3.2.2" data-path="interpretations-of-probability.html"><a href="interpretations-of-probability.html#subjective-probability"><i class="fa fa-check"></i><b>3.2.2</b> Subjective probability</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="consistency.html"><a href="consistency.html"><i class="fa fa-check"></i><b>3.3</b> Working with probabilities</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="consistency.html"><a href="consistency.html#consistency-requirements"><i class="fa fa-check"></i><b>3.3.1</b> Consistency requirements</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="interpretations-of-statistics.html"><a href="interpretations-of-statistics.html"><i class="fa fa-check"></i><b>3.4</b> Interpretations of Statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="bayes-rule.html"><a href="bayes-rule.html"><i class="fa fa-check"></i><b>4</b> Bayes’ Rule</a></li>
+<li class="chapter" data-level="5" data-path="estimation.html"><a href="estimation.html"><i class="fa fa-check"></i><b>5</b> Introduction to Estimation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="point-estimation.html"><a href="point-estimation.html"><i class="fa fa-check"></i><b>5.1</b> Point estimation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="inference.html"><a href="inference.html"><i class="fa fa-check"></i><b>6</b> Introduction to Inference</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="comparing-bayesian-and-frequentist-interval-estimates.html"><a href="comparing-bayesian-and-frequentist-interval-estimates.html"><i class="fa fa-check"></i><b>6.1</b> Comparing Bayesian and frequentist interval estimates</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="prediction.html"><a href="prediction.html"><i class="fa fa-check"></i><b>7</b> Introduction to Prediction</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="posterior-predictive-checking.html"><a href="posterior-predictive-checking.html"><i class="fa fa-check"></i><b>7.1</b> Posterior predictive checking</a></li>
+<li class="chapter" data-level="7.2" data-path="prior-predictive-tuning.html"><a href="prior-predictive-tuning.html"><i class="fa fa-check"></i><b>7.2</b> Prior predictive tuning</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="continuous.html"><a href="continuous.html"><i class="fa fa-check"></i><b>8</b> Introduction to Continuous Prior and Posterior Distributions</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="a-brief-review-of-continuous-distributions.html"><a href="a-brief-review-of-continuous-distributions.html"><i class="fa fa-check"></i><b>8.1</b> A brief review of continuous distributions</a></li>
+<li class="chapter" data-level="8.2" data-path="continuous-distributions-for-a-population-proportion.html"><a href="continuous-distributions-for-a-population-proportion.html"><i class="fa fa-check"></i><b>8.2</b> Continuous distributions for a population proportion</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="prior.html"><a href="prior.html"><i class="fa fa-check"></i><b>9</b> Considering Prior Distributions</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="what-not-to-do-when-considering-priors.html"><a href="what-not-to-do-when-considering-priors.html"><i class="fa fa-check"></i><b>9.1</b> What NOT to do when considering priors</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="jags.html"><a href="jags.html"><i class="fa fa-check"></i><b>10</b> Introduction to Posterior Simulation and JAGS</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="introduction-to-jags.html"><a href="introduction-to-jags.html"><i class="fa fa-check"></i><b>10.1</b> Introduction to JAGS</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="introduction-to-jags.html"><a href="introduction-to-jags.html#load-the-data"><i class="fa fa-check"></i><b>10.1.1</b> Load the data</a></li>
+<li class="chapter" data-level="10.1.2" data-path="introduction-to-jags.html"><a href="introduction-to-jags.html#specify-the-model-likelihood-and-prior"><i class="fa fa-check"></i><b>10.1.2</b> Specify the model: likelihood and prior</a></li>
+<li class="chapter" data-level="10.1.3" data-path="introduction-to-jags.html"><a href="introduction-to-jags.html#compile-in-jags"><i class="fa fa-check"></i><b>10.1.3</b> Compile in JAGS</a></li>
+<li class="chapter" data-level="10.1.4" data-path="introduction-to-jags.html"><a href="introduction-to-jags.html#simulate-values-from-the-posterior-distribution"><i class="fa fa-check"></i><b>10.1.4</b> Simulate values from the posterior distribution</a></li>
+<li class="chapter" data-level="10.1.5" data-path="introduction-to-jags.html"><a href="introduction-to-jags.html#summarizing-simulated-values-and-diagnostic-checking"><i class="fa fa-check"></i><b>10.1.5</b> Summarizing simulated values and diagnostic checking</a></li>
+<li class="chapter" data-level="10.1.6" data-path="introduction-to-jags.html"><a href="introduction-to-jags.html#posterior-prediction"><i class="fa fa-check"></i><b>10.1.6</b> Posterior prediction</a></li>
+<li class="chapter" data-level="10.1.7" data-path="introduction-to-jags.html"><a href="introduction-to-jags.html#loading-data-as-individual-values-rather-than-summary-statistics"><i class="fa fa-check"></i><b>10.1.7</b> Loading data as individual values rather than summary statistics</a></li>
+<li class="chapter" data-level="10.1.8" data-path="introduction-to-jags.html"><a href="introduction-to-jags.html#simulating-multiple-chains"><i class="fa fa-check"></i><b>10.1.8</b> Simulating multiple chains</a></li>
+<li class="chapter" data-level="10.1.9" data-path="introduction-to-jags.html"><a href="introduction-to-jags.html#shinystan"><i class="fa fa-check"></i><b>10.1.9</b> ShinyStan</a></li>
+<li class="chapter" data-level="10.1.10" data-path="introduction-to-jags.html"><a href="introduction-to-jags.html#back-to-the-left-handed-problem"><i class="fa fa-check"></i><b>10.1.10</b> Back to the left-handed problem</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="bayes-factor.html"><a href="bayes-factor.html"><i class="fa fa-check"></i><b>11</b> Odds and Bayes Factors</a></li>
+<li class="chapter" data-level="12" data-path="model-comparison.html"><a href="model-comparison.html"><i class="fa fa-check"></i><b>12</b> Introduction to Bayesian Model Comparison</a></li>
+<li class="chapter" data-level="13" data-path="poisson.html"><a href="poisson.html"><i class="fa fa-check"></i><b>13</b> Bayesian Analysis of Poisson Count Data</a></li>
+<li class="chapter" data-level="14" data-path="multi-parameter.html"><a href="multi-parameter.html"><i class="fa fa-check"></i><b>14</b> Introduction to Multi-Parameter Models</a></li>
+<li class="chapter" data-level="15" data-path="mean.html"><a href="mean.html"><i class="fa fa-check"></i><b>15</b> Bayesian Analysis of a Numerical Variable</a></li>
+<li class="chapter" data-level="16" data-path="two-samples.html"><a href="two-samples.html"><i class="fa fa-check"></i><b>16</b> Comparing Two Samples</a></li>
+<li class="chapter" data-level="17" data-path="mcmc.html"><a href="mcmc.html"><i class="fa fa-check"></i><b>17</b> Introduction to Markov Chain Monte Carlo (MCMC) Simulation</a></li>
+<li class="chapter" data-level="18" data-path="diagnostics.html"><a href="diagnostics.html"><i class="fa fa-check"></i><b>18</b> Some Diagnostics for MCMC Simulation</a></li>
+<li class="chapter" data-level="19" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>19</b> Introduction to Hierarchical Models</a></li>
+<li class="chapter" data-level="20" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>20</b> Bayesian Analysis of Simple Linear Regression</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Introduction to Bayesian Reasoning and Methods</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="poisson" class="section level1" number="13">
+<h1><span class="header-section-number">Chapter 13</span> Bayesian Analysis of Poisson Count Data</h1>
+<p>In this chapter we’ll consider Bayesian analysis for count data.</p>
+<p>We have covered in some detail the problem of estimating a population proportion for a binary categorical variable.
+In these situations we assumed a Binomial likelihood for the count of “successes” in the sample.
+However, a Binomial model has several restrictive assumptions that might not be satisfied in practice.
+<em>Poisson models</em> are more flexible models for count data.</p>
+
+<div class="example">
+<span id="exm:poisson-hr-intro" class="example"><strong>Example 13.1  </strong></span>Let <span class="math inline">\(Y\)</span> be the number of home runs hit (in total by both teams) in a randomly selected Major League Baseball game.
+</div>
+<ol style="list-style-type: decimal">
+<li>In what ways is this like the Binomial situation? (What is a trial? What is “success”?)</li>
+<li>In what ways is this NOT like the Binomial situation?</li>
+</ol>
+
+<div class="solution">
+\iffalse{} <span class="solution"><em>Solution. </em></span> to Example <a href="poisson.html#exm:poisson-hr-intro">13.1</a>
+</div>
+<details>
+<summary>
+Show/hide solution
+</summary>
+<ol style="list-style-type: decimal">
+<li>Each pitch is a trial, and on each trial either a home run is hit (“success”) or not. The random variable <span class="math inline">\(Y\)</span> counts the number of home runs (successes) over all the trials</li>
+<li>Even though <span class="math inline">\(Y\)</span> is counting successes, this is not the Binomial situation.
+<ul>
+<li>The number of trials is not fixed. The total number of pitches varies from game to game. (The average is around 300 pitches per game).</li>
+<li>The probability of success is not the same on each trial. Different batters have different probabilities of hitting home runs. Also, different pitch counts or game situations lead to different probabilities of home runs.</li>
+<li>The trials might not be independent, though this is a little more questionable. Make sure you distinguish independence from the previous assumption of unequal probabilities of success; you need to consider conditional probabilities to assess independence. Maybe if a pitcher gives up a home run on one pitch, then the pitcher is “rattled” so the probability that he also gives up a home run on the next pitch increases, or the pitcher gets pulled for a new pitcher which changes the probability of a home run on the next pitch.</li>
+</ul></li>
+</ol>
+</details>
+
+<div class="example">
+<span id="exm:poisson-accidents-intro" class="example"><strong>Example 13.2  </strong></span>Let <span class="math inline">\(Y\)</span> be the number of automobiles that get in accidents on Highway 101 in San Luis Obispo on a randomly selected day.
+</div>
+<ol style="list-style-type: decimal">
+<li>In what ways is this like the Binomial situation? (What is a trial? What is “success”?)</li>
+<li>In what ways is this NOT like the Binomial situation?</li>
+</ol>
+
+<div class="solution">
+\iffalse{} <span class="solution"><em>Solution. </em></span> to Example <a href="poisson.html#exm:poisson-accidents-intro">13.2</a>
+</div>
+<details>
+<summary>
+Show/hide solution
+</summary>
+<ol style="list-style-type: decimal">
+<li>Each automobile on the road in the day is a trial, and on each automobile either gets in an accident (“success”) or not. The random variable <span class="math inline">\(Y\)</span> counts the number of automobiles that get into accidents (successes). (Remember “success” is just a generic label for the event you’re interested in; “success” is not necessarily good.)</li>
+<li>Even though <span class="math inline">\(Y\)</span> is counting successes, this is not the Binomial situation.
+<ul>
+<li>The number of trials is not fixed. The total number of automobiles on the road varies from day to day.</li>
+<li>The probability of success is not the same on each trial. Different drivers have different probabilities of getting into accidents; some drivers are safer than others. Also, different conditions increase the probability of an accident, like driving at night.</li>
+<li>The trials are plausibly not independent. Make sure you distinguish independence from the previous assumption of unequal probabilities of success; you need to consider conditional probabilities to assess independence. If an automobile gets into an accident, then the probability of getting into an accident increases for the automobiles that are driving near it.</li>
+</ul></li>
+</ol>
+</details>
+<p>Poisson models are models for counts that have more flexibility than Binomial models.
+Poisson models are parameterized by a single parameter (the mean) and do not require all the assumptions of a Binomial model.
+Poisson distributions are often used to model the distribution of variables that count the number of “relatively rare” events that occur over a certain interval of time or in a certain location (e.g., number of accidents on a highway in a day, number of car insurance policies that have claims in a week, number of bank loans that go into default, number of mutations in a DNA sequence, number of earthquakes that occur in SoCal in an hour, etc.)</p>
+<p>A discrete random variable <span class="math inline">\(Y\)</span> has a <strong>Poisson distribution</strong> with parameter <span class="math inline">\(\theta&gt;0\)</span> if its probability mass function satisfies
+<span class="math display">\[\begin{align*}
+f(y|\theta) &amp; = \frac{e^{-\theta}\theta^y}{y!}, \quad y=0,1,2,\ldots
+\end{align*}\]</span>
+If <span class="math inline">\(Y\)</span> has a Poisson(<span class="math inline">\(\theta\)</span>) distribution then
+<span class="math display">\[\begin{align*}
+E(Y) &amp; = \theta\\
+Var(Y) &amp; = \theta
+\end{align*}\]</span></p>
+<p>For a Poisson distribution, both the mean and variance are equal to <span class="math inline">\(\theta\)</span>, but remember that the mean is measured in the count units (e.g., home runs) but the variance is measured in squared units (e.g., <span class="math inline">\((\text{home runs})^2\)</span>).</p>
+<p>Poisson distributions have many nice properties, including the following.</p>
+<p><strong>Poisson aggregation.</strong> If <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are independent, <span class="math inline">\(Y_1\)</span> has a Poisson(<span class="math inline">\(\theta_1\)</span>) distribution, and <span class="math inline">\(Y_2\)</span> has a Poisson(<span class="math inline">\(\theta_2\)</span>) distribution, then <span class="math inline">\(Y_1+Y_2\)</span> has a Poisson(<span class="math inline">\(\theta_1+\theta_2\)</span>) distribution<a href="references.html#fn21" class="footnote-ref" id="fnref21"><sup>21</sup></a>.
+That is, if independent component counts each follow a Poisson distribution then the total count also follows a Poisson distribution.
+Poisson aggregation extends naturally to more than two components.
+For example, if the number of babies born each day at a certain hospital follows a Poisson distribution — perhaps with different daily rates (e.g., higher for Friday than Saturday) — independently from day to day, then the number of babies born each week at the hospital also follows a Poisson distribution.</p>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-162-1.png" width="672" /></p>
+
+<div class="example">
+<span id="exm:poisson-hr-discrete" class="example"><strong>Example 13.3  </strong></span>Suppose the number of home runs hit per game (by both teams in total) at a particular Major League Baseball park follows a Poisson distribution with parameter <span class="math inline">\(\theta\)</span>.
+</div>
+<ol style="list-style-type: decimal">
+<li><p>Sketch your prior distribution for <span class="math inline">\(\theta\)</span> and describe its features.
+What are the possible values of <span class="math inline">\(\theta\)</span>?
+Does <span class="math inline">\(\theta\)</span> take values on a discrete or continuous scale?</p></li>
+<li><p>Suppose <span class="math inline">\(Y\)</span> represents a home run count for a single game.
+What are the possible values of <span class="math inline">\(Y\)</span>?
+Does <span class="math inline">\(Y\)</span> take values on a discrete or continuous scale?</p></li>
+<li><p>We’ll start with a discrete prior for <span class="math inline">\(\theta\)</span> to illustrate ideas.</p>
+<table>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(\theta\)</span></th>
+<th align="right">0.5</th>
+<th align="right">1.5</th>
+<th align="right">2.5</th>
+<th align="right">3.5</th>
+<th align="right">4.5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Probability</td>
+<td align="right">0.13</td>
+<td align="right">0.45</td>
+<td align="right">0.28</td>
+<td align="right">0.11</td>
+<td align="right">0.03</td>
+</tr>
+</tbody>
+</table>
+<p>Suppose a single game with 1 home run is observed. Find the posterior distribution of <span class="math inline">\(\theta\)</span>. In particular, how do you determine the likelihood column?</p></li>
+<li><p>Now suppose a second game, with 3 home runs, is observed, independently of the first.
+Find the posterior distribution of <span class="math inline">\(\theta\)</span> after observing these two games, using the posterior distribution from the previous part as the prior distribution in this part.</p></li>
+<li><p>Now consider the original prior again.
+Find the posterior distribution of <span class="math inline">\(\theta\)</span> after observing 1 home run in the first game and 3 home runs in the second, without the intermediate updating of the posterior after the first game.
+How does the likelihood column relate to the likelihood columns from the previous parts?
+How does the posterior distribution compare with the posterior distribution from the previous part?</p></li>
+<li><p>Now consider the original prior again.
+Suppose that instead of observing the two individual values, we only observe that there is a total of 4 home runs in 2 games.
+Find the posterior distribution of <span class="math inline">\(\theta\)</span>.
+In particular, you do you determine the likelihood column?
+How does the likelihood column compare to the one from the previous part?
+How does posterior compare to the previous part?</p></li>
+<li><p>Suppose we’ll observe a third game tomorrow. How could you find — both analytically and via simulation —the posterior predictive probability that this game has 0 home runs?</p></li>
+<li><p>Now let’s consider a continuous prior distribution for <span class="math inline">\(\theta\)</span> which satisfies
+<span class="math display">\[
+\pi(\theta) \propto \theta^{4 -1}e^{-2\theta}, \qquad \theta &gt; 0
+\]</span>
+Use grid approximation to compute the posterior distribution of <span class="math inline">\(\theta\)</span> given 1 home run in a single game.
+Plot the prior, (scaled) likelihood, and posterior.
+(Note: you will need to cut the grid off at some point.
+While <span class="math inline">\(\theta\)</span> can take any value greater than 0, the interval [0, 8] accounts for 99.99% of the prior probability.)</p></li>
+<li><p>Now let’s consider some real data.
+Assume home runs per game at Citizens Bank Park (Phillies!) follow a Poisson distribution with parameter <span class="math inline">\(\theta\)</span>.
+Assume that the prior distribution for <span class="math inline">\(\theta\)</span> satisfies
+<span class="math display">\[
+\pi(\theta) \propto \theta^{4 -1}e^{-2\theta}, \qquad \theta &gt; 0
+\]</span>
+The following summarizes data for the 2020 season<a href="references.html#fn22" class="footnote-ref" id="fnref22"><sup>22</sup></a>.
+There were 97 home runs in 32 games.
+Use grid approximation to compute the posterior distribution of <span class="math inline">\(\theta\)</span> given the data.
+Be sure to specify the likelihood.
+Plot the prior, (scaled) likelihood, and posterior.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Home runs</th>
+<th align="right">Number of games</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">5</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">6</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-164-1.png" width="672" /></p></li>
+</ol>
+
+<div class="solution">
+\iffalse{} <span class="solution"><em>Solution. </em></span> to Example <a href="poisson.html#exm:poisson-hr-discrete">13.3</a>
+</div>
+<ol style="list-style-type: decimal">
+<li><p>Your prior is whatever it is.
+We’ll discuss how we chose a prior in a later part.
+Even though each data value is an integer, the mean number of home runs per game <span class="math inline">\(\theta\)</span> can be any value greater than 0.
+That is, the <em>parameter</em> <span class="math inline">\(\theta\)</span> takes values on a continuous scale.</p></li>
+<li><p><span class="math inline">\(Y\)</span> can be 0, 1, 2, and so on, taking values on a discrete scale.
+Technically, there is no fixed upper bound on what <span class="math inline">\(Y\)</span> can be.</p></li>
+<li><p>The likelihood is the Poisson probability of 1 home run in a game computed for each value of <span class="math inline">\(\theta\)</span>.
+<span class="math display">\[
+f(y=1|\theta) = \frac{e^{-\theta}\theta^1}{1!}
+\]</span>
+For example, the likelihood of 1 home run in a game given <span class="math inline">\(\theta=0.5\)</span> is <span class="math inline">\(f(y=1|\theta=0.5) = \frac{e^{-0.5}0.5^1}{1!} = 0.3033\)</span>.
+If on average there are 0.5 home runs per game, then about 30% of games would have exactly 1 home run.
+As always posterior is proportional to the product of prior and likelihood. We see that the posterior distibution puts even greater probability on <span class="math inline">\(\theta=1.5\)</span> than the prior.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">theta</th>
+<th align="right">prior</th>
+<th align="right">likelihood</th>
+<th align="right">product</th>
+<th align="right">posterior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.5</td>
+<td align="right">0.13</td>
+<td align="right">0.3033</td>
+<td align="right">0.0394</td>
+<td align="right">0.1513</td>
+</tr>
+<tr class="even">
+<td align="right">1.5</td>
+<td align="right">0.45</td>
+<td align="right">0.3347</td>
+<td align="right">0.1506</td>
+<td align="right">0.5779</td>
+</tr>
+<tr class="odd">
+<td align="right">2.5</td>
+<td align="right">0.28</td>
+<td align="right">0.2052</td>
+<td align="right">0.0575</td>
+<td align="right">0.2205</td>
+</tr>
+<tr class="even">
+<td align="right">3.5</td>
+<td align="right">0.11</td>
+<td align="right">0.1057</td>
+<td align="right">0.0116</td>
+<td align="right">0.0446</td>
+</tr>
+<tr class="odd">
+<td align="right">4.5</td>
+<td align="right">0.03</td>
+<td align="right">0.0500</td>
+<td align="right">0.0015</td>
+<td align="right">0.0058</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>The likelihood is the Poisson probability of 3 home runs in a game computed for each value of <span class="math inline">\(\theta\)</span>.
+<span class="math display">\[
+f(y=3|\theta) = \frac{e^{-\theta}\theta^3}{3!}
+\]</span></p>
+<p>The posterior places about 90% of the probability on <span class="math inline">\(\theta\)</span> being either 1.5 or 2.5.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">theta</th>
+<th align="right">prior</th>
+<th align="right">likelihood</th>
+<th align="right">product</th>
+<th align="right">posterior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.5</td>
+<td align="right">0.1513</td>
+<td align="right">0.0126</td>
+<td align="right">0.0019</td>
+<td align="right">0.0145</td>
+</tr>
+<tr class="even">
+<td align="right">1.5</td>
+<td align="right">0.5779</td>
+<td align="right">0.1255</td>
+<td align="right">0.0725</td>
+<td align="right">0.5488</td>
+</tr>
+<tr class="odd">
+<td align="right">2.5</td>
+<td align="right">0.2205</td>
+<td align="right">0.2138</td>
+<td align="right">0.0471</td>
+<td align="right">0.3566</td>
+</tr>
+<tr class="even">
+<td align="right">3.5</td>
+<td align="right">0.0446</td>
+<td align="right">0.2158</td>
+<td align="right">0.0096</td>
+<td align="right">0.0728</td>
+</tr>
+<tr class="odd">
+<td align="right">4.5</td>
+<td align="right">0.0058</td>
+<td align="right">0.1687</td>
+<td align="right">0.0010</td>
+<td align="right">0.0073</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>Since the games are independent<a href="references.html#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a> the likelihood is the product of the likelihoods from the two previous parts
+<span class="math display">\[
+f(y=(1, 3)|\theta) = \left(\frac{e^{-\theta}\theta^1}{1!}\right)\left(\frac{e^{-\theta}\theta^3}{3!}\right)
+\]</span></p>
+<p>Unsuprisingly, the posterior distribution is the same as in the previous part.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">theta</th>
+<th align="right">prior</th>
+<th align="right">likelihood</th>
+<th align="right">product</th>
+<th align="right">posterior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.5</td>
+<td align="right">0.13</td>
+<td align="right">0.0038</td>
+<td align="right">0.0005</td>
+<td align="right">0.0145</td>
+</tr>
+<tr class="even">
+<td align="right">1.5</td>
+<td align="right">0.45</td>
+<td align="right">0.0420</td>
+<td align="right">0.0189</td>
+<td align="right">0.5488</td>
+</tr>
+<tr class="odd">
+<td align="right">2.5</td>
+<td align="right">0.28</td>
+<td align="right">0.0439</td>
+<td align="right">0.0123</td>
+<td align="right">0.3566</td>
+</tr>
+<tr class="even">
+<td align="right">3.5</td>
+<td align="right">0.11</td>
+<td align="right">0.0228</td>
+<td align="right">0.0025</td>
+<td align="right">0.0728</td>
+</tr>
+<tr class="odd">
+<td align="right">4.5</td>
+<td align="right">0.03</td>
+<td align="right">0.0084</td>
+<td align="right">0.0003</td>
+<td align="right">0.0073</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>By Poisson aggregation, the total number of home runs in 2 games follows a Poisson(<span class="math inline">\(2\theta\)</span>) distribution.
+The likelihood is the probability of a value of 4 (home runs in 2 games) computed using a Poisson(<span class="math inline">\(2\theta\)</span>) for each value of <span class="math inline">\(\theta\)</span>.
+<span class="math display">\[
+f(\bar{y}=2|\theta) = \frac{e^{-2\theta}(2\theta)^4}{4!}
+\]</span>
+For example, the likelihood of 4 home runs in 2 games given <span class="math inline">\(\theta=0.5\)</span> is <span class="math inline">\(f(\bar{y}=2|\theta=0.5) = \frac{e^{-2\times 0.5}(2\times 0.5)^4}{4!} = 0.0153\)</span>.
+If on average there are 0.5 home runs per game, then about 1.5% of samples of 2 games would have exactly 4 home runs.</p>
+<p>The likelihood is not the same as in the previous part because there are more samples of two games that yield a total of 4 home runs than those that yield 1 home run in the first game and 3 in the second. However, the likelihoods are <em>proportionally</em> the same. For example, the likelihood for <span class="math inline">\(\theta=2.5\)</span> is about 1.92 times greater than the likelihood for <span class="math inline">\(\theta = 3.5\)</span> in both this part and the previous part. Therefore, the posterior distribution is the same as in the previous part.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">theta</th>
+<th align="right">prior</th>
+<th align="right">likelihood</th>
+<th align="right">product</th>
+<th align="right">posterior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.5</td>
+<td align="right">0.13</td>
+<td align="right">0.0153</td>
+<td align="right">0.0020</td>
+<td align="right">0.0145</td>
+</tr>
+<tr class="even">
+<td align="right">1.5</td>
+<td align="right">0.45</td>
+<td align="right">0.1680</td>
+<td align="right">0.0756</td>
+<td align="right">0.5488</td>
+</tr>
+<tr class="odd">
+<td align="right">2.5</td>
+<td align="right">0.28</td>
+<td align="right">0.1755</td>
+<td align="right">0.0491</td>
+<td align="right">0.3566</td>
+</tr>
+<tr class="even">
+<td align="right">3.5</td>
+<td align="right">0.11</td>
+<td align="right">0.0912</td>
+<td align="right">0.0100</td>
+<td align="right">0.0728</td>
+</tr>
+<tr class="odd">
+<td align="right">4.5</td>
+<td align="right">0.03</td>
+<td align="right">0.0337</td>
+<td align="right">0.0010</td>
+<td align="right">0.0073</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>Simulate a value of <span class="math inline">\(\theta\)</span> from its posterior distribution and then given <span class="math inline">\(\theta\)</span> simulate a value of <span class="math inline">\(Y\)</span> from a Poisson(<span class="math inline">\(\theta\)</span>) distribution, and repeat many times.
+Approximate the probability of 0 home runs by finding the proportion of repetitions that yield a <span class="math inline">\(Y\)</span> value of 0.
+(We’ll see some code a little later.)</p>
+<p>We can compute the probability using the law of total probability. Find the probability of 0 home runs for each value of <span class="math inline">\(\theta\)</span>, that is <span class="math inline">\(e^{-\theta}\theta^0/0! = e^{-\theta}\)</span>, and then weight these values by their posterior probabilities to find the predictive probability of 0 home runs, which is 0.163.</p>
+<p><span class="math display">\[\begin{align*}
+&amp; e^{-0.5}(0.0145) + e^{-1.5}(0.5488) + e^{-2.5}(0.3566) + e^{-3.5}(0.0728) + e^{-4.5}(0.0073)\\
+= &amp;  (0.6065)(0.0145) + (0.2231)(0.5488) + (0.0821)(0.3566) + (0.0302)(0.0728) + (0.0111)(0.0073) = 0.1628
+\end{align*}\]</span></p>
+<p>According to this model, we predict that about 16% of games would have 0 home runs.</p></li>
+<li><p>Now let’s consider a continuous prior distribution for <span class="math inline">\(\theta\)</span> which satisfies
+<span class="math display">\[
+\pi(\theta) \propto \theta^{4 -1}e^{-2\theta}, \qquad \theta &gt; 0
+\]</span>
+Use grid approximation to compute the posterior distribution of <span class="math inline">\(\theta\)</span> given 1 home run in a single game.
+Plot the prior, (scaled) likelihood, and posterior.
+(Note: you will need to cut the grid off at some point.
+While <span class="math inline">\(\theta\)</span> can take any value greater than 0, the interval [0, 8] accounts for 99.99% of the prior probability.)</p>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="poisson.html#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prior</span></span>
+<span id="cb222-2"><a href="poisson.html#cb222-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>, <span class="fl">0.001</span>)</span>
+<span id="cb222-3"><a href="poisson.html#cb222-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb222-4"><a href="poisson.html#cb222-4" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">=</span> theta <span class="sc">^</span> (<span class="dv">4</span> <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> theta)</span>
+<span id="cb222-5"><a href="poisson.html#cb222-5" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">=</span> prior <span class="sc">/</span> <span class="fu">sum</span>(prior)</span>
+<span id="cb222-6"><a href="poisson.html#cb222-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb222-7"><a href="poisson.html#cb222-7" aria-hidden="true" tabindex="-1"></a><span class="co"># data</span></span>
+<span id="cb222-8"><a href="poisson.html#cb222-8" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">1</span> <span class="co"># sample size</span></span>
+<span id="cb222-9"><a href="poisson.html#cb222-9" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> <span class="dv">1</span> <span class="co"># sample mean</span></span>
+<span id="cb222-10"><a href="poisson.html#cb222-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb222-11"><a href="poisson.html#cb222-11" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihood</span></span>
+<span id="cb222-12"><a href="poisson.html#cb222-12" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">=</span> <span class="fu">dpois</span>(y, theta)</span>
+<span id="cb222-13"><a href="poisson.html#cb222-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb222-14"><a href="poisson.html#cb222-14" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior</span></span>
+<span id="cb222-15"><a href="poisson.html#cb222-15" aria-hidden="true" tabindex="-1"></a>product <span class="ot">=</span> likelihood <span class="sc">*</span> prior</span>
+<span id="cb222-16"><a href="poisson.html#cb222-16" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> product <span class="sc">/</span> <span class="fu">sum</span>(product)</span>
+<span id="cb222-17"><a href="poisson.html#cb222-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb222-18"><a href="poisson.html#cb222-18" aria-hidden="true" tabindex="-1"></a>ylim <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(<span class="fu">c</span>(prior, posterior, likelihood <span class="sc">/</span> <span class="fu">sum</span>(likelihood))))</span>
+<span id="cb222-19"><a href="poisson.html#cb222-19" aria-hidden="true" tabindex="-1"></a>xlim <span class="ot">=</span> <span class="fu">range</span>(theta)</span>
+<span id="cb222-20"><a href="poisson.html#cb222-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(theta, prior, <span class="at">type=</span><span class="st">&#39;l&#39;</span>, <span class="at">xlim=</span>xlim, <span class="at">ylim=</span>ylim, <span class="at">col=</span><span class="st">&quot;orange&quot;</span>, <span class="at">xlab=</span><span class="st">&#39;theta&#39;</span>, <span class="at">ylab=</span><span class="st">&#39;&#39;</span>, <span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>)</span>
+<span id="cb222-21"><a href="poisson.html#cb222-21" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new=</span>T) </span>
+<span id="cb222-22"><a href="poisson.html#cb222-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(theta, likelihood<span class="sc">/</span><span class="fu">sum</span>(likelihood), <span class="at">type=</span><span class="st">&#39;l&#39;</span>, <span class="at">xlim=</span>xlim, <span class="at">ylim=</span>ylim, <span class="at">col=</span><span class="st">&quot;skyblue&quot;</span>, <span class="at">xlab=</span><span class="st">&#39;&#39;</span>, <span class="at">ylab=</span><span class="st">&#39;&#39;</span>, <span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>)</span>
+<span id="cb222-23"><a href="poisson.html#cb222-23" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new=</span>T)</span>
+<span id="cb222-24"><a href="poisson.html#cb222-24" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(theta, posterior, <span class="at">type=</span><span class="st">&#39;l&#39;</span>, <span class="at">xlim=</span>xlim, <span class="at">ylim=</span>ylim, <span class="at">col=</span><span class="st">&quot;seagreen&quot;</span>, <span class="at">xlab=</span><span class="st">&#39;&#39;</span>, <span class="at">ylab=</span><span class="st">&#39;&#39;</span>, <span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>)</span>
+<span id="cb222-25"><a href="poisson.html#cb222-25" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;prior&quot;</span>, <span class="st">&quot;scaled likelihood&quot;</span>, <span class="st">&quot;posterior&quot;</span>), <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;skyblue&quot;</span>, <span class="st">&quot;seagreen&quot;</span>))</span></code></pre></div>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-170-1.png" width="672" /></p></li>
+<li><p>By Poisson aggregation, the total number of home runs in 32 games follows a Poisson(<span class="math inline">\(32\theta\)</span>) distribution.
+The likelihood is the probability of observing a value of 97 (for the total number of home runs in 32 games) from a Poisson(<span class="math inline">\(32\theta\)</span>) distribution.
+<span class="math display">\[\begin{align*}
+f(\bar{y} = 97/32|\theta) &amp; = e^{-32\theta}(32\theta)^{97}/97!, \qquad \theta &gt; 0\\
+&amp; \propto e^{-32\theta}\theta^{97}, \qquad \theta &gt; 0\\
+\end{align*}\]</span></p>
+<p>The likelihood is centered at the sample mean of 97/32 = 3.03. The posterior distribution follows the likelihood fairly closely, but the prior still has a little influence.</p>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="poisson.html#cb223-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prior</span></span>
+<span id="cb223-2"><a href="poisson.html#cb223-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>, <span class="fl">0.001</span>)</span>
+<span id="cb223-3"><a href="poisson.html#cb223-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb223-4"><a href="poisson.html#cb223-4" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">=</span> theta <span class="sc">^</span> (<span class="dv">4</span> <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> theta)</span>
+<span id="cb223-5"><a href="poisson.html#cb223-5" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">=</span> prior <span class="sc">/</span> <span class="fu">sum</span>(prior)</span>
+<span id="cb223-6"><a href="poisson.html#cb223-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb223-7"><a href="poisson.html#cb223-7" aria-hidden="true" tabindex="-1"></a><span class="co"># data</span></span>
+<span id="cb223-8"><a href="poisson.html#cb223-8" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">32</span> <span class="co"># sample size</span></span>
+<span id="cb223-9"><a href="poisson.html#cb223-9" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> <span class="dv">97</span> <span class="sc">/</span> <span class="dv">32</span> <span class="co"># sample mean</span></span>
+<span id="cb223-10"><a href="poisson.html#cb223-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb223-11"><a href="poisson.html#cb223-11" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihood - for total count</span></span>
+<span id="cb223-12"><a href="poisson.html#cb223-12" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">=</span> <span class="fu">dpois</span>(n <span class="sc">*</span> y, n <span class="sc">*</span> theta)</span>
+<span id="cb223-13"><a href="poisson.html#cb223-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb223-14"><a href="poisson.html#cb223-14" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior</span></span>
+<span id="cb223-15"><a href="poisson.html#cb223-15" aria-hidden="true" tabindex="-1"></a>product <span class="ot">=</span> likelihood <span class="sc">*</span> prior</span>
+<span id="cb223-16"><a href="poisson.html#cb223-16" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> product <span class="sc">/</span> <span class="fu">sum</span>(product)</span>
+<span id="cb223-17"><a href="poisson.html#cb223-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb223-18"><a href="poisson.html#cb223-18" aria-hidden="true" tabindex="-1"></a>ylim <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(<span class="fu">c</span>(prior, posterior, likelihood <span class="sc">/</span> <span class="fu">sum</span>(likelihood))))</span>
+<span id="cb223-19"><a href="poisson.html#cb223-19" aria-hidden="true" tabindex="-1"></a>xlim <span class="ot">=</span> <span class="fu">range</span>(theta)</span>
+<span id="cb223-20"><a href="poisson.html#cb223-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(theta, prior, <span class="at">type=</span><span class="st">&#39;l&#39;</span>, <span class="at">xlim=</span>xlim, <span class="at">ylim=</span>ylim, <span class="at">col=</span><span class="st">&quot;orange&quot;</span>, <span class="at">xlab=</span><span class="st">&#39;theta&#39;</span>, <span class="at">ylab=</span><span class="st">&#39;&#39;</span>, <span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>)</span>
+<span id="cb223-21"><a href="poisson.html#cb223-21" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new=</span>T) </span>
+<span id="cb223-22"><a href="poisson.html#cb223-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(theta, likelihood<span class="sc">/</span><span class="fu">sum</span>(likelihood), <span class="at">type=</span><span class="st">&#39;l&#39;</span>, <span class="at">xlim=</span>xlim, <span class="at">ylim=</span>ylim, <span class="at">col=</span><span class="st">&quot;skyblue&quot;</span>, <span class="at">xlab=</span><span class="st">&#39;&#39;</span>, <span class="at">ylab=</span><span class="st">&#39;&#39;</span>, <span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>)</span>
+<span id="cb223-23"><a href="poisson.html#cb223-23" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new=</span>T)</span>
+<span id="cb223-24"><a href="poisson.html#cb223-24" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(theta, posterior, <span class="at">type=</span><span class="st">&#39;l&#39;</span>, <span class="at">xlim=</span>xlim, <span class="at">ylim=</span>ylim, <span class="at">col=</span><span class="st">&quot;seagreen&quot;</span>, <span class="at">xlab=</span><span class="st">&#39;&#39;</span>, <span class="at">ylab=</span><span class="st">&#39;&#39;</span>, <span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>)</span>
+<span id="cb223-25"><a href="poisson.html#cb223-25" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;prior&quot;</span>, <span class="st">&quot;scaled likelihood&quot;</span>, <span class="st">&quot;posterior&quot;</span>), <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;skyblue&quot;</span>, <span class="st">&quot;seagreen&quot;</span>))</span></code></pre></div>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-171-1.png" width="672" /></p></li>
+</ol>
+<p>Gamma distributions are commonly used as prior distributions for parameters that take positive values, <span class="math inline">\(\theta &gt; 0\)</span>.</p>
+<p>A continuous RV <span class="math inline">\(U\)</span> has a <strong>Gamma distribution</strong> with <em>shape parameter</em> <span class="math inline">\(\alpha&gt;0\)</span> and <em>rate parameter</em><a href="references.html#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a> <span class="math inline">\(\lambda&gt;0\)</span> if its density satisfies<a href="references.html#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a>
+<span class="math display">\[
+f(u) \propto u^{\alpha-1}e^{-\lambda u}, \quad u&gt;0,
+\]</span></p>
+<p>In R: <code>dgamma(u, shape, rate)</code> for density, <code>rgamma</code> to simulate, <code>qgamma</code> for quantiles, etc.</p>
+<p>It can be shown that a Gamma(<span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\lambda\)</span>) density has
+<span class="math display">\[\begin{align*}
+\text{Mean (EV)} &amp; = \frac{\alpha}{\lambda}\\
+\text{Variance} &amp; = \frac{\alpha}{\lambda^2}
+\\
+\text{Mode} &amp; = \frac{\alpha -1}{\lambda}, \qquad \text{if $\alpha\ge 1$}
+\end{align*}\]</span></p>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-172-1.png" width="50%" /><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-172-2.png" width="50%" /></p>
+
+<div class="example">
+<span id="exm:gamma-plots" class="example"><strong>Example 13.4  </strong></span>The plots above show a few examples of Gamma distributions.
+</div>
+<ol style="list-style-type: decimal">
+<li>The plot on the left above contains a few different Gamma densities, all with rate parameter <span class="math inline">\(\lambda=1\)</span>. Match each density to its shape parameter <span class="math inline">\(\alpha\)</span>; the choices are 1, 2, 5, 10.</li>
+<li>The plot on the right above contains a few different Gamma densities, all with shape parameter <span class="math inline">\(\alpha=3\)</span>. Match each density to its rate parameter <span class="math inline">\(\lambda\)</span>; the choices are 1, 2, 3, 4.</li>
+</ol>
+
+<div class="solution">
+\iffalse{} <span class="solution"><em>Solution. </em></span> to Example <a href="poisson.html#exm:gamma-plots">13.4</a>
+</div>
+<ol style="list-style-type: decimal">
+<li><p>For a fixed <span class="math inline">\(\lambda\)</span>, as the shape parameter <span class="math inline">\(\alpha\)</span> increases, both the mean and the standard deviation increase.</p></li>
+<li><p>For a fixed <span class="math inline">\(\alpha\)</span>, as the rate parameter <span class="math inline">\(\lambda\)</span> increases, both the mean and the standard deviation decrease.</p>
+<p>Observe that changing <span class="math inline">\(\lambda\)</span> doesn’t change the overall shape of the curve, just the scale of values that it covers. However, changing <span class="math inline">\(\alpha\)</span> does change the shape of the curve; notice the changes in concavity in the plot on the left.</p></li>
+</ol>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-174-5.png" width="50%" /><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-174-6.png" width="50%" /></p>
+
+<div class="example">
+<span id="exm:poisson-hr-continuous" class="example"><strong>Example 13.5  </strong></span>Assume home runs per game at Citizens Bank Park follow a Poisson distribution with parameter <span class="math inline">\(\theta\)</span>.
+Assume for <span class="math inline">\(\theta\)</span> a Gamma prior distribution with shape parameter <span class="math inline">\(\alpha = 4\)</span> and rate parameter <span class="math inline">\(\lambda = 2\)</span>.
+</div>
+<ol style="list-style-type: decimal">
+<li>Write an expression for the prior density <span class="math inline">\(\pi(\theta)\)</span>.
+Plot the prior distribution.
+Find the prior mean, prior SD, and prior 50%, 80%, and 98% credible intervals for <span class="math inline">\(\theta\)</span>.</li>
+<li>Suppose a single game with 1 home run is observed.
+Write the likelihood function.</li>
+<li>Write an expression for the posterior distribution of <span class="math inline">\(\theta\)</span> given a single game with 1 home run.
+Identify by the name the posterior distribution and the values of relevant parameters.
+Plot the prior distribution, (scaled) likelihood, and posterior distribution. Find the posterior mean, posterior SD, and posterior 50%, 80%, and 98% credible intervals for <span class="math inline">\(\theta\)</span>.</li>
+<li>Now consider the original prior again.
+Determine the likelihood of observing 1 home run in game 1 and 3 home runs in game 2 in a sample of 2 games, and the posterior distribution of <span class="math inline">\(\theta\)</span> given this sample.
+Identify by the name the posterior distribution and the values of relevant parameters.
+Plot the prior distribution, (scaled) likelihood, and posterior distribution. Find the posterior mean, posterior SD, and posterior 50%, 80%, and 98% credible intervals for <span class="math inline">\(\theta\)</span>.</li>
+<li>Consider the original prior again.
+Determine the likelihood of observing a total of 4 home runs in a sample of 2 games, and the posterior distribution of <span class="math inline">\(\theta\)</span> given this sample.
+Identify by the name the posterior distribution and the values of relevant parameters.
+How does this compare to the previous part?</li>
+<li>Consider the 2020 data in which there were 97 home runs in 32 games.
+Determine the likelihood function, and the posterior distribution of <span class="math inline">\(\theta\)</span> given this sample.
+Identify by the name the posterior distribution and the values of relevant parameters.
+Plot the prior distribution, (scaled) likelihood, and posterior distribution. Find the posterior mean, posterior SD, and posterior 50%, 80%, and 98% credible intervals for <span class="math inline">\(\theta\)</span>.</li>
+<li>Interpret the credible interval from the previous part in context.</li>
+<li>Express the posterior mean of <span class="math inline">\(\theta\)</span> based on the 2020 data as a weighted average of the prior mean and the sample mean.</li>
+<li>While the main parameter is <span class="math inline">\(\theta\)</span>, there are other parameters of interest.
+For example, <span class="math inline">\(\eta = e^{-\theta}\)</span> is the population proportion of games in which there are 0 home runs.
+Assuming that you already have the posterior distribution of <span class="math inline">\(\theta\)</span> (or a simulation-based approximation), explain how you could use simulation to approximate the posterior distribution of <span class="math inline">\(\eta\)</span>.
+Run the simulation and plot the posterior distribution, and find and interpret 50%, 80%, and 98% posterior credible intervals for <span class="math inline">\(\eta\)</span>.</li>
+<li>Use JAGS to approximate the posterior distribution of <span class="math inline">\(\theta\)</span> given this sample.
+Compare with the results from the previous example.</li>
+</ol>
+
+<div class="solution">
+\iffalse{} <span class="solution"><em>Solution. </em></span> to Example <a href="poisson.html#exm:poisson-hr-continuous">13.5</a>
+</div>
+<ol style="list-style-type: decimal">
+<li><p>Remember that in the Gamma(4,2) prior distribution <span class="math inline">\(\theta\)</span> is treated as the variable.
+<span class="math display">\[
+\pi(\theta)  \propto \theta^{4-1}e^{-2\theta}, \qquad \theta &gt; 0.
+\]</span></p>
+<p>This is the same prior we used in the grid approximation in Example <a href="poisson.html#exm:poisson-hr-discrete">13.3</a>. See below for a plot.
+<span class="math display">\[\begin{align*}
+\text{Prior mean } &amp; = \frac{\alpha}{\lambda} &amp; &amp; \frac{4}{2} = 2\\
+\text{Prior SD} &amp; = \sqrt{\frac{\alpha}{\lambda^2}} &amp; &amp; \sqrt{\frac{4}{2^2}} = 1
+\end{align*}\]</span></p>
+<p>Use <code>qgamma</code> for find the endpoints of the credible intervals.</p>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="poisson.html#cb224-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>), <span class="at">shape =</span> <span class="dv">4</span>, <span class="at">rate =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 1.268 2.555</code></pre>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="poisson.html#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">0.90</span>), <span class="at">shape =</span> <span class="dv">4</span>, <span class="at">rate =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 0.8724 3.3404</code></pre>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="poisson.html#cb228-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>), <span class="at">shape =</span> <span class="dv">4</span>, <span class="at">rate =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 0.4116 5.0226</code></pre></li>
+<li><p>The likelihood is the Poisson probability of 1 home run in a game computed for each value of <span class="math inline">\(\theta&gt;0\)</span>.
+<span class="math display">\[
+f(y=1|\theta) = \frac{e^{-\theta}\theta^1}{1!}\propto e^{-\theta}\theta, \qquad \theta&gt;0.
+\]</span></p></li>
+<li><p>Posterior is proportional to likelihood times prior
+<span class="math display">\[\begin{align*}
+\pi(\theta|y = 1)  &amp; \propto \left(e^{-\theta}\theta\right)\left(\theta^{4-1}e^{-2\theta}\right), \qquad \theta &gt; 0,\\
+&amp; \propto \theta^{(4 + 1) - 1}e^{-(2+1)\theta}, \qquad \theta &gt; 0.
+\end{align*}\]</span></p>
+<p>We recognize the above as the Gamma density with shape parameter <span class="math inline">\(\alpha=4+1\)</span> and rate parameter <span class="math inline">\(\lambda = 2 + 1\)</span>.</p>
+<p><span class="math display">\[\begin{align*}
+\text{Posterior mean } &amp; = \frac{\alpha}{\lambda} &amp; &amp; \frac{5}{3} = 1.667\\
+\text{Posterior SD} &amp; = \sqrt{\frac{\alpha}{\lambda^2}} &amp; &amp; \sqrt{\frac{5}{3^2}} = 0.745
+\end{align*}\]</span></p>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="poisson.html#cb230-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>), <span class="at">shape =</span> <span class="dv">4</span> <span class="sc">+</span> <span class="dv">1</span>, <span class="at">rate =</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 1.123 2.091</code></pre>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="poisson.html#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">0.90</span>), <span class="at">shape =</span> <span class="dv">4</span> <span class="sc">+</span> <span class="dv">1</span>, <span class="at">rate =</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 0.8109 2.6645</code></pre>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="poisson.html#cb234-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>), <span class="at">shape =</span> <span class="dv">4</span> <span class="sc">+</span> <span class="dv">1</span>, <span class="at">rate =</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 0.4264 3.8682</code></pre>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="poisson.html#cb236-1" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>, <span class="fl">0.001</span>) <span class="co"># the grid is just for plotting</span></span>
+<span id="cb236-2"><a href="poisson.html#cb236-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb236-3"><a href="poisson.html#cb236-3" aria-hidden="true" tabindex="-1"></a><span class="co"># prior</span></span>
+<span id="cb236-4"><a href="poisson.html#cb236-4" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">=</span> <span class="dv">4</span></span>
+<span id="cb236-5"><a href="poisson.html#cb236-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb236-6"><a href="poisson.html#cb236-6" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">=</span> <span class="fu">dgamma</span>(theta, <span class="at">shape =</span> alpha, <span class="at">rate =</span> lambda)</span>
+<span id="cb236-7"><a href="poisson.html#cb236-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb236-8"><a href="poisson.html#cb236-8" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihood</span></span>
+<span id="cb236-9"><a href="poisson.html#cb236-9" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">1</span> <span class="co"># sample size</span></span>
+<span id="cb236-10"><a href="poisson.html#cb236-10" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> <span class="dv">1</span> <span class="co"># sample mean</span></span>
+<span id="cb236-11"><a href="poisson.html#cb236-11" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">=</span> <span class="fu">dpois</span>(n <span class="sc">*</span> y, n <span class="sc">*</span> theta)</span>
+<span id="cb236-12"><a href="poisson.html#cb236-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb236-13"><a href="poisson.html#cb236-13" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior</span></span>
+<span id="cb236-14"><a href="poisson.html#cb236-14" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> <span class="fu">dgamma</span>(theta, alpha <span class="sc">+</span> n <span class="sc">*</span> y, lambda <span class="sc">+</span> n)</span>
+<span id="cb236-15"><a href="poisson.html#cb236-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb236-16"><a href="poisson.html#cb236-16" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb236-17"><a href="poisson.html#cb236-17" aria-hidden="true" tabindex="-1"></a>plot_continuous_posterior <span class="ot">&lt;-</span> <span class="cf">function</span>(theta, prior, likelihood, posterior) {</span>
+<span id="cb236-18"><a href="poisson.html#cb236-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb236-19"><a href="poisson.html#cb236-19" aria-hidden="true" tabindex="-1"></a>  ymax <span class="ot">=</span> <span class="fu">max</span>(<span class="fu">c</span>(prior, posterior))</span>
+<span id="cb236-20"><a href="poisson.html#cb236-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb236-21"><a href="poisson.html#cb236-21" aria-hidden="true" tabindex="-1"></a>  scaled_likelihood <span class="ot">=</span> likelihood <span class="sc">*</span> ymax <span class="sc">/</span> <span class="fu">max</span>(likelihood)</span>
+<span id="cb236-22"><a href="poisson.html#cb236-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb236-23"><a href="poisson.html#cb236-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(theta, prior, <span class="at">type=</span><span class="st">&#39;l&#39;</span>, <span class="at">col=</span><span class="st">&#39;orange&#39;</span>, <span class="at">xlim=</span> <span class="fu">range</span>(theta), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, ymax), <span class="at">ylab=</span><span class="st">&#39;&#39;</span>, <span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>)</span>
+<span id="cb236-24"><a href="poisson.html#cb236-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">new=</span>T)</span>
+<span id="cb236-25"><a href="poisson.html#cb236-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(theta, scaled_likelihood, <span class="at">type=</span><span class="st">&#39;l&#39;</span>, <span class="at">col=</span><span class="st">&#39;skyblue&#39;</span>, <span class="at">xlim=</span><span class="fu">range</span>(theta), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, ymax), <span class="at">ylab=</span><span class="st">&#39;&#39;</span>,  <span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>)</span>
+<span id="cb236-26"><a href="poisson.html#cb236-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">new=</span>T)</span>
+<span id="cb236-27"><a href="poisson.html#cb236-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(theta, posterior, <span class="at">type=</span><span class="st">&#39;l&#39;</span>, <span class="at">col=</span><span class="st">&#39;seagreen&#39;</span>, <span class="at">xlim=</span><span class="fu">range</span>(theta), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, ymax), <span class="at">ylab=</span><span class="st">&#39;&#39;</span>, <span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>)</span>
+<span id="cb236-28"><a href="poisson.html#cb236-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;prior&quot;</span>, <span class="st">&quot;scaled likelihood&quot;</span>, <span class="st">&quot;posterior&quot;</span>), <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;skyblue&quot;</span>, <span class="st">&quot;seagreen&quot;</span>))</span>
+<span id="cb236-29"><a href="poisson.html#cb236-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb236-30"><a href="poisson.html#cb236-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb236-31"><a href="poisson.html#cb236-31" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_continuous_posterior</span>(theta, prior, likelihood, posterior)</span></code></pre></div>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p></li>
+<li><p>The likelihood is the product of the likelihoods of <span class="math inline">\(y=1\)</span> and <span class="math inline">\(y=3\)</span>.
+<span class="math display">\[
+f(y=(1, 3)|\theta) = \left(\frac{e^{-\theta}\theta^1}{1!}\right)\left(\frac{e^{-\theta}\theta^3}{3!}\right) \propto e^{-2\theta}\theta^{4}, \qquad \theta&gt;0.
+\]</span></p>
+<p>The posterior satisfies
+<span class="math display">\[\begin{align*}
+\pi(\theta|y = (1, 3))  &amp; \propto \left(e^{-2\theta}\theta^4\right)\left(\theta^{4-1}e^{-2\theta}\right), \qquad \theta &gt; 0,\\
+&amp; \propto \theta^{(4 + 4) - 1}e^{-(2+2)\theta}, \qquad \theta &gt; 0.
+\end{align*}\]</span></p>
+<p>We recognize the above as the Gamma density with shape parameter <span class="math inline">\(\alpha=4+4\)</span> and rate parameter <span class="math inline">\(\lambda = 2 + 2\)</span>.</p>
+<p><span class="math display">\[\begin{align*}
+\text{Posterior mean } &amp; = \frac{\alpha}{\lambda} &amp; &amp; \frac{8}{4} = 2\\
+\text{Posterior SD} &amp; = \sqrt{\frac{\alpha}{\lambda^2}} &amp; &amp; \sqrt{\frac{8}{4^2}} = 0.707
+\end{align*}\]</span></p>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="poisson.html#cb237-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>), <span class="at">shape =</span> <span class="dv">4</span> <span class="sc">+</span> <span class="dv">4</span>, <span class="at">rate =</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 1.489 2.421</code></pre>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="poisson.html#cb239-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">0.90</span>), <span class="at">shape =</span> <span class="dv">4</span> <span class="sc">+</span> <span class="dv">4</span>, <span class="at">rate =</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 1.164 2.943</code></pre>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="poisson.html#cb241-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>), <span class="at">shape =</span> <span class="dv">4</span> <span class="sc">+</span> <span class="dv">4</span>, <span class="at">rate =</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 0.7265 4.0000</code></pre>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="poisson.html#cb243-1" aria-hidden="true" tabindex="-1"></a>n  <span class="ot">=</span> <span class="dv">2</span> <span class="co"># sample size</span></span>
+<span id="cb243-2"><a href="poisson.html#cb243-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> <span class="dv">2</span> <span class="co"># sample mean</span></span>
+<span id="cb243-3"><a href="poisson.html#cb243-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb243-4"><a href="poisson.html#cb243-4" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihood</span></span>
+<span id="cb243-5"><a href="poisson.html#cb243-5" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">=</span> <span class="fu">dpois</span>(<span class="dv">1</span>, theta) <span class="sc">*</span> <span class="fu">dpois</span>(<span class="dv">3</span>, theta)</span>
+<span id="cb243-6"><a href="poisson.html#cb243-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb243-7"><a href="poisson.html#cb243-7" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior</span></span>
+<span id="cb243-8"><a href="poisson.html#cb243-8" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> <span class="fu">dgamma</span>(theta, alpha <span class="sc">+</span> n <span class="sc">*</span> y, lambda <span class="sc">+</span> n)</span>
+<span id="cb243-9"><a href="poisson.html#cb243-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb243-10"><a href="poisson.html#cb243-10" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb243-11"><a href="poisson.html#cb243-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_continuous_posterior</span>(theta, prior, likelihood, posterior)</span></code></pre></div>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-179-1.png" width="672" /></p></li>
+<li><p>By Poisson aggregation, the total number of home runs in 2 games follows a Poisson(<span class="math inline">\(2\theta\)</span>) distribution.
+The likelihood is the probability of a value of 4 (home runs in 2 games) computed using a Poisson(<span class="math inline">\(2\theta\)</span>) for each value of <span class="math inline">\(\theta\)</span>.
+<span class="math display">\[
+f(\bar{y}=2|\theta) = \frac{e^{-2\theta}(2\theta)^4}{4!} \propto e^{-2\theta}\theta^4, \qquad \theta &gt;0
+\]</span>
+The shape of the likelihood as a function of <span class="math inline">\(\theta\)</span> is the same as in the previous part; the likelihood functions are proportionally the same regardless of whether you observe the individual values or just the total count.
+Therefore, the posterior distribution is the same as in the previous part.</p>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="poisson.html#cb244-1" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihood</span></span>
+<span id="cb244-2"><a href="poisson.html#cb244-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">2</span> <span class="co"># sample size</span></span>
+<span id="cb244-3"><a href="poisson.html#cb244-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> <span class="dv">2</span> <span class="co"># sample mean</span></span>
+<span id="cb244-4"><a href="poisson.html#cb244-4" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">=</span> <span class="fu">dpois</span>(n <span class="sc">*</span> y, n <span class="sc">*</span> theta)</span>
+<span id="cb244-5"><a href="poisson.html#cb244-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb244-6"><a href="poisson.html#cb244-6" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior</span></span>
+<span id="cb244-7"><a href="poisson.html#cb244-7" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> <span class="fu">dgamma</span>(theta, alpha <span class="sc">+</span> n <span class="sc">*</span> y, lambda <span class="sc">+</span> n)</span>
+<span id="cb244-8"><a href="poisson.html#cb244-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb244-9"><a href="poisson.html#cb244-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb244-10"><a href="poisson.html#cb244-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_continuous_posterior</span>(theta, prior, likelihood, posterior)</span></code></pre></div>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-180-1.png" width="672" /></p></li>
+<li><p>By Poisson aggregation, the total number of home runs in 32 games follows a Poisson(<span class="math inline">\(32\theta\)</span>) distribution.
+The likelihood is the probability of observing a value of 97 (for the total number of home runs in 32 games) from a Poisson(<span class="math inline">\(32\theta\)</span>) distribution.
+<span class="math display">\[\begin{align*}
+f(\bar{y} = 97/32|\theta) &amp; = e^{-32\theta}(32\theta)^{97}/97!, \qquad \theta &gt; 0\\
+&amp; \propto e^{-32\theta}\theta^{97}, \qquad \theta &gt; 0\\
+\end{align*}\]</span></p>
+<p>The posterior satisfies
+<span class="math display">\[\begin{align*}
+\pi(\theta|\bar{y} = 97/32)  &amp; \propto \left(e^{-32\theta}\theta^{97}\right)\left(\theta^{4-1}e^{-2\theta}\right), \qquad \theta &gt; 0,\\
+&amp; \propto \theta^{(4 + 97) - 1}e^{-(2+32)\theta}, \qquad \theta &gt; 0.
+\end{align*}\]</span></p>
+<p>We recognize the above as the Gamma density with shape parameter <span class="math inline">\(\alpha=4+97\)</span> and rate parameter <span class="math inline">\(\lambda = 2 + 32\)</span>.</p>
+<p><span class="math display">\[\begin{align*}
+\text{Posterior mean } &amp; = \frac{\alpha}{\lambda} &amp; &amp; \frac{101}{34} = 2.97\\
+\text{Posterior SD} &amp; = \sqrt{\frac{\alpha}{\lambda^2}} &amp; &amp; \sqrt{\frac{101}{34^2}} = 0.296
+\end{align*}\]</span></p>
+<p>The likelihood is centered at the sample mean of 97/32 = 3.03. The posterior distribution follows the likelihood fairly closely, but the prior still has a little influence. The posterior is essentially identical to the one we computed via grid approximation in Example <a href="poisson.html#exm:poisson-hr-discrete">13.3</a>.</p>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="poisson.html#cb245-1" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihood</span></span>
+<span id="cb245-2"><a href="poisson.html#cb245-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">32</span> <span class="co"># sample size</span></span>
+<span id="cb245-3"><a href="poisson.html#cb245-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> <span class="dv">97</span> <span class="sc">/</span> <span class="dv">32</span> <span class="co"># sample mean</span></span>
+<span id="cb245-4"><a href="poisson.html#cb245-4" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">=</span> <span class="fu">dpois</span>(n <span class="sc">*</span> y, n <span class="sc">*</span> theta)</span>
+<span id="cb245-5"><a href="poisson.html#cb245-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb245-6"><a href="poisson.html#cb245-6" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior</span></span>
+<span id="cb245-7"><a href="poisson.html#cb245-7" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> <span class="fu">dgamma</span>(theta, alpha <span class="sc">+</span> n <span class="sc">*</span> y, lambda <span class="sc">+</span> n)</span>
+<span id="cb245-8"><a href="poisson.html#cb245-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb245-9"><a href="poisson.html#cb245-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb245-10"><a href="poisson.html#cb245-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_continuous_posterior</span>(theta, prior, likelihood, posterior)</span></code></pre></div>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-181-1.png" width="672" /></p>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="poisson.html#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>), alpha <span class="sc">+</span> n <span class="sc">*</span> y, lambda <span class="sc">+</span> n)</span></code></pre></div>
+<pre><code>## [1] 2.766 3.164</code></pre>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="poisson.html#cb248-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">0.90</span>), alpha <span class="sc">+</span> n <span class="sc">*</span> y, lambda <span class="sc">+</span> n)</span></code></pre></div>
+<pre><code>## [1] 2.599 3.355</code></pre>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="poisson.html#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>), alpha <span class="sc">+</span> n <span class="sc">*</span> y, lambda <span class="sc">+</span> n)</span></code></pre></div>
+<pre><code>## [1] 2.326 3.701</code></pre></li>
+<li><p>The credible intervals represent conclusions about <span class="math inline">\(\theta\)</span>, the mean number of home runs per game at Citizen Bank Park.</p>
+<p>There is a posterior probability of 50% that the mean number of home runs per games at Citizen Bank Park is between 2.77 and 3.16. It is equally plausible that <span class="math inline">\(\theta\)</span> is inside this interval as outside.</p>
+<p>There is a posterior probability of 80% that the mean number of home runs per games at Citizen Bank Park is between 2.6 and 3.36. It is four times more plausible that <span class="math inline">\(\theta\)</span> is inside this interval than outside.</p>
+<p>There is a posterior probability of 98% that the mean number of home runs per games at Citizen Bank Park is between 2.33 and 3.7. It is 49 times more plausible that <span class="math inline">\(\theta\)</span> is inside this interval than outside.</p></li>
+<li><p>The prior mean is 4/2=2, based on a “prior sample size” of 2.
+The sample mean is 97/32 = 3.03, based on a sample size of 32.
+The posterior mean is (4 + 97)/(2 + 32) = 2.97.
+The posterior mean is a weighted average of the prior mean and the sample mean with the weights based on the “sample sizes”
+<span class="math display">\[
+2.97 = \frac{4+97}{2 + 32} = \left(\frac{2}{2 + 32}\right)\left(\frac{4}{2}\right) +  \left(\frac{32}{2 + 32}\right)\left(\frac{97}{32}\right) = (0.0589)(2)+ (0.941)(3.03)
+\]</span></p></li>
+<li><p>Simulate a value of <span class="math inline">\(\theta\)</span> from its posterior distribution, compute <span class="math inline">\(\eta = e^{-\theta}\)</span>, repeat many times, and summarize the simulated values of <span class="math inline">\(\eta\)</span>.
+We can use the <code>quantile</code> function to find the endpoints of credible intervals.</p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="poisson.html#cb252-1" aria-hidden="true" tabindex="-1"></a>theta_sim <span class="ot">=</span> <span class="fu">rgamma</span>(<span class="dv">10000</span>, alpha <span class="sc">+</span> n <span class="sc">*</span> y, lambda <span class="sc">+</span> n)</span>
+<span id="cb252-2"><a href="poisson.html#cb252-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb252-3"><a href="poisson.html#cb252-3" aria-hidden="true" tabindex="-1"></a>eta_sim <span class="ot">=</span> <span class="fu">exp</span>(<span class="sc">-</span>theta_sim)</span>
+<span id="cb252-4"><a href="poisson.html#cb252-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb252-5"><a href="poisson.html#cb252-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(eta_sim, <span class="at">freq =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb252-6"><a href="poisson.html#cb252-6" aria-hidden="true" tabindex="-1"></a> <span class="at">xlab =</span> <span class="st">&quot;Population proportion of games with 0 HRs&quot;</span>,</span>
+<span id="cb252-7"><a href="poisson.html#cb252-7" aria-hidden="true" tabindex="-1"></a> <span class="at">ylab =</span> <span class="st">&quot;Posterior density&quot;</span>,</span>
+<span id="cb252-8"><a href="poisson.html#cb252-8" aria-hidden="true" tabindex="-1"></a> <span class="at">main =</span> <span class="st">&quot;Posterior distribution of exp(-theta)&quot;</span>)</span></code></pre></div>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-182-1.png" width="672" /></p>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="poisson.html#cb253-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(eta_sim, <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>))</span></code></pre></div>
+<pre><code>##     25%     75% 
+## 0.04220 0.06315</code></pre>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="poisson.html#cb255-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(eta_sim, <span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">0.90</span>))</span></code></pre></div>
+<pre><code>##     10%     90% 
+## 0.03481 0.07455</code></pre>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="poisson.html#cb257-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(eta_sim, <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>))</span></code></pre></div>
+<pre><code>##      1%     99% 
+## 0.02488 0.09849</code></pre>
+<p>There is a posterior probability of 98% that the population proportion of games with 0 home runs is between 0.025 and 0.098.</p></li>
+<li><p>The JAGS code is below. The results are very similar to the theoretical results from previous parts.</p></li>
+</ol>
+<p>Here is the JAGS code. Note</p>
+<ul>
+<li>The data has been loaded as individual values, number of home runs in each of the 32 games</li>
+<li>Likelihood is defined as a loop. For each <code>y[i]</code> value, the likelihood is computing according to a Poisson(<span class="math inline">\(\theta\)</span>) distribution</li>
+<li>Prior distribution is a Gamma distribution. (Remember, JAGS syntax for <code>dgamma</code>, <code>dpois</code>, etc, is not the same as in R.)</li>
+</ul>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="poisson.html#cb259-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data</span></span>
+<span id="cb259-2"><a href="poisson.html#cb259-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&quot;_data/citizens-bank-hr-2020.csv&quot;</span>)</span>
+<span id="cb259-3"><a href="poisson.html#cb259-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> df<span class="sc">$</span>hr</span>
+<span id="cb259-4"><a href="poisson.html#cb259-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(y)</span>
+<span id="cb259-5"><a href="poisson.html#cb259-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb259-6"><a href="poisson.html#cb259-6" aria-hidden="true" tabindex="-1"></a><span class="co"># model</span></span>
+<span id="cb259-7"><a href="poisson.html#cb259-7" aria-hidden="true" tabindex="-1"></a>model_string <span class="ot">&lt;-</span> <span class="st">&quot;model{</span></span>
+<span id="cb259-8"><a href="poisson.html#cb259-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb259-9"><a href="poisson.html#cb259-9" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
+<span id="cb259-10"><a href="poisson.html#cb259-10" aria-hidden="true" tabindex="-1"></a><span class="st">  for (i in 1:n){</span></span>
+<span id="cb259-11"><a href="poisson.html#cb259-11" aria-hidden="true" tabindex="-1"></a><span class="st">    y[i] ~ dpois(theta)</span></span>
+<span id="cb259-12"><a href="poisson.html#cb259-12" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb259-13"><a href="poisson.html#cb259-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb259-14"><a href="poisson.html#cb259-14" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior</span></span>
+<span id="cb259-15"><a href="poisson.html#cb259-15" aria-hidden="true" tabindex="-1"></a><span class="st">  theta ~ dgamma(alpha, lambda)</span></span>
+<span id="cb259-16"><a href="poisson.html#cb259-16" aria-hidden="true" tabindex="-1"></a><span class="st">  alpha &lt;- 4  </span></span>
+<span id="cb259-17"><a href="poisson.html#cb259-17" aria-hidden="true" tabindex="-1"></a><span class="st">  lambda &lt;- 2</span></span>
+<span id="cb259-18"><a href="poisson.html#cb259-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb259-19"><a href="poisson.html#cb259-19" aria-hidden="true" tabindex="-1"></a><span class="st">}&quot;</span></span>
+<span id="cb259-20"><a href="poisson.html#cb259-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb259-21"><a href="poisson.html#cb259-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile the model</span></span>
+<span id="cb259-22"><a href="poisson.html#cb259-22" aria-hidden="true" tabindex="-1"></a>dataList <span class="ot">=</span> <span class="fu">list</span>(<span class="at">y=</span>y, <span class="at">n=</span>n)</span>
+<span id="cb259-23"><a href="poisson.html#cb259-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb259-24"><a href="poisson.html#cb259-24" aria-hidden="true" tabindex="-1"></a>Nrep <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb259-25"><a href="poisson.html#cb259-25" aria-hidden="true" tabindex="-1"></a>Nchains <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb259-26"><a href="poisson.html#cb259-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb259-27"><a href="poisson.html#cb259-27" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="fu">textConnection</span>(model_string), </span>
+<span id="cb259-28"><a href="poisson.html#cb259-28" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data=</span>dataList,</span>
+<span id="cb259-29"><a href="poisson.html#cb259-29" aria-hidden="true" tabindex="-1"></a>                    <span class="at">n.chains=</span>Nchains)</span></code></pre></div>
+<pre><code>## Compiling model graph
+##    Resolving undeclared variables
+##    Allocating nodes
+## Graph information:
+##    Observed stochastic nodes: 32
+##    Unobserved stochastic nodes: 1
+##    Total graph size: 36
+## 
+## Initializing model</code></pre>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="poisson.html#cb261-1" aria-hidden="true" tabindex="-1"></a><span class="fu">update</span>(model, <span class="dv">1000</span>, <span class="at">progress.bar=</span><span class="st">&quot;none&quot;</span>)</span>
+<span id="cb261-2"><a href="poisson.html#cb261-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb261-3"><a href="poisson.html#cb261-3" aria-hidden="true" tabindex="-1"></a>posterior_sample <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(model, </span>
+<span id="cb261-4"><a href="poisson.html#cb261-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">variable.names=</span><span class="fu">c</span>(<span class="st">&quot;theta&quot;</span>),</span>
+<span id="cb261-5"><a href="poisson.html#cb261-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">n.iter=</span>Nrep,</span>
+<span id="cb261-6"><a href="poisson.html#cb261-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">progress.bar=</span><span class="st">&quot;none&quot;</span>)</span>
+<span id="cb261-7"><a href="poisson.html#cb261-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb261-8"><a href="poisson.html#cb261-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize and check diagnostics</span></span>
+<span id="cb261-9"><a href="poisson.html#cb261-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(posterior_sample)</span></code></pre></div>
+<pre><code>## 
+## Iterations = 1001:11000
+## Thinning interval = 1 
+## Number of chains = 3 
+## Sample size per chain = 10000 
+## 
+## 1. Empirical mean and standard deviation for each variable,
+##    plus standard error of the mean:
+## 
+##           Mean             SD       Naive SE Time-series SE 
+##        2.96841        0.29380        0.00170        0.00171 
+## 
+## 2. Quantiles for each variable:
+## 
+##  2.5%   25%   50%   75% 97.5% 
+##  2.42  2.77  2.96  3.16  3.57</code></pre>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="poisson.html#cb263-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(posterior_sample)</span></code></pre></div>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-183-1.png" width="672" /></p>
+<p>In the previous example we saw that if the values of the measured variable follow a Poisson distribution with parameter <span class="math inline">\(\theta\)</span> and the prior for <span class="math inline">\(\theta\)</span> follows a Gamma distribution, then the posterior distribution for <span class="math inline">\(\theta\)</span> given the data also follows a Gamma distribution.</p>
+<p><strong>Gamma-Poisson model.</strong><a href="references.html#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a> Consider a measured variable <span class="math inline">\(Y\)</span> which, given <span class="math inline">\(\theta\)</span>, follows a Poisson<span class="math inline">\((\theta)\)</span> distribution.
+Let <span class="math inline">\(\bar{y}\)</span> be the sample mean for a random sample of size <span class="math inline">\(n\)</span>.
+Suppose <span class="math inline">\(\theta\)</span> has a Gamma<span class="math inline">\((\alpha, \lambda)\)</span> prior distribution.
+Then the posterior distribution of <span class="math inline">\(\theta\)</span> given <span class="math inline">\(\bar{y}\)</span> is the Gamma<span class="math inline">\((\alpha+n\bar{y}, \lambda+n)\)</span> distribution.</p>
+<p>That is, Gamma distributions form a <em>conjugate prior</em> family for a Poisson likelihood.</p>
+<p>The posterior distribution is a compromise between prior and likelihood.
+For the Gamma-Poisson model, there is an intuitive interpretation of this compromise.
+In a sense, you can interpret <span class="math inline">\(\alpha\)</span> as “prior total count” and <span class="math inline">\(\lambda\)</span> as “prior sample size”, but these are only “pseudo-observations”.
+Also, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span> are not necessarily integers.</p>
+<p>Note that if <span class="math inline">\(\bar{y}\)</span> is the sample mean count is then <span class="math inline">\(n\bar{y} = \sum_{i=1}^n y_i\)</span> is the sample total count.</p>
+<table>
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="13%" />
+<col width="42%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Prior</th>
+<th align="right">Data</th>
+<th align="right">Posterior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Total count</td>
+<td align="right"><span class="math inline">\(\alpha\)</span></td>
+<td align="right"><span class="math inline">\(n\bar{y}\)</span></td>
+<td align="right"><span class="math inline">\(\alpha+n\bar{y}\)</span></td>
+</tr>
+<tr class="even">
+<td>Sample size</td>
+<td align="right"><span class="math inline">\(\lambda\)</span></td>
+<td align="right"><span class="math inline">\(n\)</span></td>
+<td align="right"><span class="math inline">\(\lambda + n\)</span></td>
+</tr>
+<tr class="odd">
+<td>Mean</td>
+<td align="right"><span class="math inline">\(\frac{\alpha}{\lambda}\)</span></td>
+<td align="right"><span class="math inline">\(\bar{y}\)</span></td>
+<td align="right"><span class="math inline">\(\frac{\alpha+n\bar{y}}{\lambda+n}\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The posterior total count is the sum of the “prior total count” <span class="math inline">\(\alpha\)</span> and the sample total count <span class="math inline">\(n\bar{y}\)</span>.</li>
+<li>The posterior sample size is the sum of the “prior sample size” <span class="math inline">\(\lambda\)</span> and the observed sample size <span class="math inline">\(n\)</span>.</li>
+<li>The posterior mean is a weighted average of the prior mean and the sample mean, with weights proportional to the “sample sizes”.</li>
+</ul>
+<p><span class="math display">\[
+\frac{\alpha+n\bar{y}}{\lambda+n} = \frac{\lambda}{\lambda+n}\left(\frac{\alpha}{\lambda}\right) + \frac{n}{\lambda+n}\bar{y}
+\]</span></p>
+<ul>
+<li>As more data are collected, more weight is given to the sample mean (and less weight to the prior mean)</li>
+<li>Larger values of <span class="math inline">\(\lambda\)</span> indicate stronger prior beliefs, due to smaller prior variance (and larger “prior sample size”), and give more weight to the prior mean</li>
+</ul>
+<p>Try this <a href="https://shiny.stat.ncsu.edu/bjreich/PoissonGamma/">applet which illustrates the Gamma-Poisson model</a>.</p>
+<p>Rather than specifying <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, a Gamma distribution prior can be specified by its prior mean and SD directly.
+If the prior mean is <span class="math inline">\(\mu\)</span> and the prior SD is <span class="math inline">\(\sigma\)</span>, then
+<span class="math display">\[\begin{align*}
+\lambda &amp; = \frac{\mu}{\sigma^2}\\
+\alpha &amp; = \mu\lambda
+\end{align*}\]</span></p>
+
+<div class="example">
+<span id="exm:poisson-hr-simulation" class="example"><strong>Example 13.6  </strong></span>Continuing the previous example, assume home runs per game at Citizens Bank Park follow a Poisson distribution with parameter <span class="math inline">\(\theta\)</span>.
+Assume for <span class="math inline">\(\theta\)</span> a Gamma prior distribution with shape parameter <span class="math inline">\(\alpha = 4\)</span> and rate parameter <span class="math inline">\(\lambda = 2\)</span>.
+Consider the 2020 data in which there were 97 home runs in 32 games.
+</div>
+<ol style="list-style-type: decimal">
+<li>How could you use simulation (not JAGS) to approximate the posterior predictive distribution of home runs in a game?</li>
+<li>Use the simulation from the previous part to find and interpret a 95% posterior prediction interval with a lower bound of 0.</li>
+<li>Is a Poisson model a reasonable model for the data?
+How could you use posterior predictive simulation to simulate what a sample of 32 games might look like under this model.
+Simulate many such samples. Does the observed sample seem consistent with the model?</li>
+<li>Regarding the appropriateness of a Poisson model, we might be concerned that there are no games in the sample with 0 home runs.
+Use simulation to approximate the posterior predictive distribution of the number of games in a sample of 32 with 0 home runs.
+From this perspective, does the observed value of the statistic seem consistent with the Gamma-Poisson model?</li>
+</ol>
+
+<div class="solution">
+\iffalse{} <span class="solution"><em>Solution. </em></span> to Example <a href="poisson.html#exm:poisson-hr-simulation">13.6</a>
+</div>
+<ol style="list-style-type: decimal">
+<li><p>Simulate a value of <span class="math inline">\(\theta\)</span> from its Gamma(101, 34) posterior distribution, then given <span class="math inline">\(\theta\)</span> simulate a value of <span class="math inline">\(y\)</span> from a Poisson(<span class="math inline">\(\theta\)</span>) distribution. Repeat many times and summarize the <span class="math inline">\(y\)</span> values to approximate the posterior predictive distribution.</p>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="poisson.html#cb264-1" aria-hidden="true" tabindex="-1"></a>Nrep <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb264-2"><a href="poisson.html#cb264-2" aria-hidden="true" tabindex="-1"></a>theta_sim <span class="ot">=</span> <span class="fu">rgamma</span>(Nrep, <span class="dv">101</span>, <span class="dv">34</span>)</span>
+<span id="cb264-3"><a href="poisson.html#cb264-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb264-4"><a href="poisson.html#cb264-4" aria-hidden="true" tabindex="-1"></a>y_sim <span class="ot">=</span> <span class="fu">rpois</span>(Nrep, theta_sim)</span>
+<span id="cb264-5"><a href="poisson.html#cb264-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb264-6"><a href="poisson.html#cb264-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(y_sim) <span class="sc">/</span> Nrep, <span class="at">type =</span> <span class="st">&quot;h&quot;</span>,</span>
+<span id="cb264-7"><a href="poisson.html#cb264-7" aria-hidden="true" tabindex="-1"></a> <span class="at">xlab =</span> <span class="st">&quot;Number of home runs&quot;</span>,</span>
+<span id="cb264-8"><a href="poisson.html#cb264-8" aria-hidden="true" tabindex="-1"></a> <span class="at">ylab =</span> <span class="st">&quot;Simulated relative frequency&quot;</span>,</span>
+<span id="cb264-9"><a href="poisson.html#cb264-9" aria-hidden="true" tabindex="-1"></a> <span class="at">main =</span> <span class="st">&quot;Posterior predictive distribution&quot;</span>)</span></code></pre></div>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-184-1.png" width="672" /></p></li>
+<li><p>There is a posterior predictive probability of 95% of between 0 and 6 home runs in a game.
+Very roughly, about 95% of games have between 0 and 6 home runs.</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="poisson.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(y_sim, <span class="fl">0.95</span>)</span></code></pre></div>
+<pre><code>## 95% 
+##   6</code></pre></li>
+<li><p>Simulate a value of <span class="math inline">\(\theta\)</span> from its Gamma(101, 34) posterior distribution, then given <span class="math inline">\(\theta\)</span> simulate 32 values of <span class="math inline">\(y\)</span> from a Poisson(<span class="math inline">\(\theta\)</span>) distribution. Summarize each sample. Repeat many times to simulate many samples of size 32. Compare the observed sample with the simulated samples.
+Aside from the fact there the sample has no games with 0 home runs, the model seems reasonable.</p>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="poisson.html#cb267-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&quot;_data/citizens-bank-hr-2020.csv&quot;</span>)</span>
+<span id="cb267-2"><a href="poisson.html#cb267-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> df<span class="sc">$</span>hr</span>
+<span id="cb267-3"><a href="poisson.html#cb267-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(y)</span>
+<span id="cb267-4"><a href="poisson.html#cb267-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-5"><a href="poisson.html#cb267-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(y) <span class="sc">/</span> n, <span class="at">type =</span> <span class="st">&quot;h&quot;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">13</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.4</span>),</span>
+<span id="cb267-6"><a href="poisson.html#cb267-6" aria-hidden="true" tabindex="-1"></a> <span class="at">xlab =</span> <span class="st">&quot;Number of home runs&quot;</span>,</span>
+<span id="cb267-7"><a href="poisson.html#cb267-7" aria-hidden="true" tabindex="-1"></a> <span class="at">ylab =</span> <span class="st">&quot;Observed/Simulated relative frequency&quot;</span>,</span>
+<span id="cb267-8"><a href="poisson.html#cb267-8" aria-hidden="true" tabindex="-1"></a> <span class="at">main =</span> <span class="st">&quot;Posterior predictive distribution&quot;</span>)</span>
+<span id="cb267-9"><a href="poisson.html#cb267-9" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="dv">0</span><span class="sc">:</span><span class="dv">13</span>)</span>
+<span id="cb267-10"><a href="poisson.html#cb267-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-11"><a href="poisson.html#cb267-11" aria-hidden="true" tabindex="-1"></a>n_samples <span class="ot">=</span> <span class="dv">100</span></span>
+<span id="cb267-12"><a href="poisson.html#cb267-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-13"><a href="poisson.html#cb267-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-14"><a href="poisson.html#cb267-14" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate samples</span></span>
+<span id="cb267-15"><a href="poisson.html#cb267-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_samples){</span>
+<span id="cb267-16"><a href="poisson.html#cb267-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-17"><a href="poisson.html#cb267-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulate theta from posterior distribution</span></span>
+<span id="cb267-18"><a href="poisson.html#cb267-18" aria-hidden="true" tabindex="-1"></a>  theta_sim <span class="ot">=</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, <span class="dv">101</span>, <span class="dv">34</span>)</span>
+<span id="cb267-19"><a href="poisson.html#cb267-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-20"><a href="poisson.html#cb267-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulate values from Poisson(theta) distribution</span></span>
+<span id="cb267-21"><a href="poisson.html#cb267-21" aria-hidden="true" tabindex="-1"></a>  y_sim <span class="ot">=</span> <span class="fu">rpois</span>(n, theta_sim)</span>
+<span id="cb267-22"><a href="poisson.html#cb267-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-23"><a href="poisson.html#cb267-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add plot of simulated sample to histogram</span></span>
+<span id="cb267-24"><a href="poisson.html#cb267-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">new =</span> T)</span>
+<span id="cb267-25"><a href="poisson.html#cb267-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">table</span>(<span class="fu">factor</span>(y_sim, <span class="at">levels =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">13</span>)) <span class="sc">/</span> n, <span class="at">type =</span> <span class="st">&quot;o&quot;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">13</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.4</span>),</span>
+<span id="cb267-26"><a href="poisson.html#cb267-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;&quot;</span>, <span class="at">xaxt=</span><span class="st">&#39;n&#39;</span>, <span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>,</span>
+<span id="cb267-27"><a href="poisson.html#cb267-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">135</span>, <span class="dv">206</span>, <span class="dv">235</span>, <span class="at">max =</span> <span class="dv">255</span>, <span class="at">alpha =</span> <span class="dv">25</span>))</span>
+<span id="cb267-28"><a href="poisson.html#cb267-28" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-186-1.png" width="672" /></p></li>
+<li><p>Continuing with the simulation from the previous part, now for each simulated sample we record the number of games with 0 home runs.
+Each “dot” in the plot below represents a sample of size 32 for which we measure the number of games in the sample with 0 home runs.
+While we see that it’s less likely to have 0 home runs in 32 games than not, it would not be too surprising to see 0 home runs in a sample of 32 games.
+Therefore, the fact that there are 0 home runs in the observed sample alone does not invalidate the model.</p>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="poisson.html#cb268-1" aria-hidden="true" tabindex="-1"></a>n_samples <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb268-2"><a href="poisson.html#cb268-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb268-3"><a href="poisson.html#cb268-3" aria-hidden="true" tabindex="-1"></a>zero_count <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n_samples)</span>
+<span id="cb268-4"><a href="poisson.html#cb268-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb268-5"><a href="poisson.html#cb268-5" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate samples</span></span>
+<span id="cb268-6"><a href="poisson.html#cb268-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_samples){</span>
+<span id="cb268-7"><a href="poisson.html#cb268-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb268-8"><a href="poisson.html#cb268-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulate theta from posterior distribution</span></span>
+<span id="cb268-9"><a href="poisson.html#cb268-9" aria-hidden="true" tabindex="-1"></a>  theta_sim <span class="ot">=</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, <span class="dv">101</span>, <span class="dv">34</span>)</span>
+<span id="cb268-10"><a href="poisson.html#cb268-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb268-11"><a href="poisson.html#cb268-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulate values from Poisson(theta) distribution</span></span>
+<span id="cb268-12"><a href="poisson.html#cb268-12" aria-hidden="true" tabindex="-1"></a>  y_sim <span class="ot">=</span> <span class="fu">rpois</span>(n, theta_sim)</span>
+<span id="cb268-13"><a href="poisson.html#cb268-13" aria-hidden="true" tabindex="-1"></a>  zero_count[r] <span class="ot">=</span> <span class="fu">sum</span>(y_sim <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb268-14"><a href="poisson.html#cb268-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb268-15"><a href="poisson.html#cb268-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb268-16"><a href="poisson.html#cb268-16" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb268-17"><a href="poisson.html#cb268-17" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(zero_count) <span class="sc">/</span> n_samples, <span class="at">type =</span> <span class="st">&quot;h&quot;</span>,</span>
+<span id="cb268-18"><a href="poisson.html#cb268-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;Number of games in sample of size 32 with 0 home runs&quot;</span>,</span>
+<span id="cb268-19"><a href="poisson.html#cb268-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Simulated posterior predictive probability</span><span class="sc">\n</span><span class="st"> Proportion of samples of size 32&quot;</span>)</span></code></pre></div>
+<p><img src="bayesian-reasoning-and-methods_files/figure-html/unnamed-chunk-187-1.png" width="672" /></p></li>
+</ol>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="model-comparison.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="multi-parameter.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"],
+"google": false,
+"instapper": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bayesian-reasoning-and-methods.pdf"],
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

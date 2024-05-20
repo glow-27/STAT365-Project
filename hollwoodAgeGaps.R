@@ -6,6 +6,7 @@
 age_gaps <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-02-14/age_gaps.csv')
 
 library(dplyr)
+library(ggplot2)
 
 # Assuming your data frame is called 'age_gaps'
 # and the categorical variables are called 'character_1_gender' and 'character_2_gender'
@@ -35,7 +36,14 @@ result <- age_gaps %>%
   
 
 
-plot(age_gaps$decade, age_gaps$age_difference)
+# plot(age_gaps$decade, age_gaps$age_difference)
 print(result)
 
+# Create a ggplot object
+p <- ggplot(age_gaps, aes(x = decade, y = age_difference))
+
+# Add boxplot layers
+p + geom_boxplot(position = "dodge") +
+  labs(title = "Age Difference Distribution by Decade", x = "Decade", y = "Age Difference") +
+  theme_minimal()
 
