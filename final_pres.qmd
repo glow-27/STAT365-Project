@@ -1,0 +1,82 @@
+---
+title: "Age Differences In Hollywood Love Interests"
+author: 
+  - name: "Gabby Low, Aiden Kelly, Matthew Huang, Rachel Gluck"
+affiliation: 
+  - Department of Statistics, California Polytechnic State University San Luis Obispo
+date: "June 12, 2024"
+output: html_document
+---
+
+## Abstract
+
+Age gaps in romantic relationships are a controversial topic in Western media. Hollywood films are just one form of media that perpetuates age gaps in romantic relationships. Our objective was to see how Hollywood age gaps in heterosexual romantic relationships differed based on the gender of the older character.
+
+We hypothesized that the mean age difference between a male actor and a female actor in an on-screen relationship was greater than zero. In other words, we are testing when the man was the older character in the relationship if the age difference between him and his partner would be larger than when the woman was the older character.
+
+In this paper, we will define “mean age difference” as ( \mu*{*\text{male}} - \mu{\text{female}} ). To test this, we conducted a one-sided paired t-test on data collected by Lynn Fisher, called “Hollywood Age Gaps” where viewers can suggest films to be added to the dataset, of 1,155 movies from the years 1935 to 2022.
+
+After conducting the one-sided paired t-test, we found sufficient evidence the population mean difference in age between males and females in on-screen relationships was discernible by an average of 11.54 years ((t = 27.434); df = 1154; (p \< 0.0001)). This contrasts with the mean age gap of 5.01 years when the woman was the older character. The results of our investigation show that in Hollywood movies, men tend to have a larger age gap with their female partners when they are older in the relationship.
+
+## Introduction
+
+Leonardo DiCaprio is an award-winning actor known for his roles in the Titanic, Wolf of Wall Street, and more. The 49-year-old is also known for almost exclusively dating women under 25 years old - as highlighted in popular internet humor. It appears that while DiCaprio ages, his partners do not. In an analysis done by Robert Fleck and F. Andrew Hanssen, they found that the average male actor is consistently six to ten years older than the average female actor (Fleck and Hanssen, 2016).
+
+Similarly, in real life, men will generally have a minimum acceptable age for a partner that is five to fifteen years younger than them, however, women tend to have a maximum acceptable age for a partner that is no more than ten years older than them (Lehmiller and Christopher, 2008). Research done by Anna Chesnokova and Willie van Peer found that when reading fiction, people become so consumed with the story, that they walk away changed from that experience. The immersive nature of reading fiction allows for a change in perception. Reading fiction that portrays age-gap relationships might soften people’s attitudes toward topics that are not socially acceptable (Chesnokova and van Peer, 2021). While the immersive nature is different in film, through audio and visual stimulation, it has a similar effect on people, and can shape people’s emotions and social attitudes (McGinn, 2005).
+
+We explored age difference between genders ourselves, first by creating a histogram of frequency counts for male age minus female age in heterosexual on-screen relationships, and conducting a one-sided paired t-test to determine significance. In particular, we investigated whether the population mean age difference between a male and female actor within an on-screen relationship. In this paper, we will refer to “mean age difference” as ( \mu*{*\text{male}} - \mu{\text{female}} ).
+
+## Data and Methods
+
+We obtained the data from hollywoodagegaps.com (Fisher, 2023) via tidytuesday. Our dataset has a sample size of 1,155 movies from 1935 to 2022. Furthermore, “Hollywood Age Gaps” is open to public contributions, so the movies included in the dataset are more likely to be well-known movies, or movies popular from the countries of the contributors. Neither the dataset nor Fisher’s website contained information about the origins of the movies. People may also tend to suggest movies with more obvious age differences. This means that the age gaps observed from our analysis may be more exaggerated than the true population age difference. The dataset includes the movie name, release year, director, names of the older and younger actors, genders of the older and younger characters, and information about the ages of the characters and the actors. It is important to note that when recording the age gaps of character relationships, gender was recorded as a binary variable, only “Men” and “Women”. However, we acknowledge that this does not accurately reflect real life, where gender is not a binary. Furthermore, the dataset only includes actors who are **at least** 17 years old and does **not** include animated characters.
+
+We will use the age difference between the actors in the films provided to see if there is a significant difference in the mean age gaps depending on the gender of the older actor. In this study, we will use a paired t-test to evaluate whether the mean difference in the male actor’s age was greater than that of their female counterparts.
+
+We are specifically interested in whether men in on-screen relationships tend to be older than their female counterparts. To find this, we subtracted the age of a female counterpart from her male counterpart’s (male’s age - female’s age).
+
+We conducted a paired t-test to determine whether the mean age difference (( \mu*{*\text{male}} - \mu{\text{female}} )) was greater than zero. We evaluated the independence and normality assumptions for the paired t-test and gathered that our data was approximately normal (See appendix).
+
+To conduct our analysis, we used R Studio. We used the R package dplyr to manipulate our data and the package ggplot2 to create visualizations.
+
+# Data Preparation
+
+```{r, eval=FALSE}
+library(dplyr)
+tuesdata <- tidytuesdayR::tt_load('2023-02-14')
+tuesdata <- tidytuesdayR::tt_load(2023, week = 7)
+
+age_gaps <- tuesdata$age_gaps |> 
+  mutate(maleFemDiff = case_when(
+character_1_gender == "woman" ~ -1*age_difference, 
+character_1_gender == "man" ~ age_difference))
+
+t.test(age_gaps$maleFemDiff, mu=0, alternative="greater")
+```
+
+**\>\> p-value \< 2.2e-16**
+
+## Results
+
+The one-sided paired t-test yields a small p-value (p \< 0.0001). Thus, we have extremely strong evidence to reject the null hypothesis and conclude that the population mean difference in age is greater than zero. (( \mu*{*\text{male}} - \mu{\text{female}} \> 0 )).
+
+**Table 1**. The age differences between older characters, broken down by gender, are shown with their mean, median, and standard deviation.
+
+| Older Character | Mean Age Gap | Median Age Gap | Standard Deviation |
+|-----------------|--------------|----------------|--------------------|
+| Male            | 11.54        | 10             | 8.45               |
+| Female          | 5.01         | 3              | 6.06               |
+| Overall         | 10.37        | 8              | 8.45               |
+
+![**Histogram 1:** of the frequency counts of age differences in heterosexual movie couples, using male age minus female age. The blue represents couples where the man is older in the relationship and the pink represents when the woman is older.](graph.png)
+
+![**Histogram 2**](hist2.png)
+
+While exploring Lynn Fisher’s dataset Hollywood Age Gaps, we saw a disparity in on-screen relationship age gaps when the male actor is older vs when a female actor is older.
+
+## Discussion
+
+We concluded that the population mean age of male actors is larger than the population mean age of their female counterparts. We speculate that this phenomenon occurred because movies tend to reflect real life, and in many cultures, heterosexual relationships where the man is older than the woman are the most common (Nascimento, 2019). Our study only included age differences in heterosexual romantic relationships and does not generalize to same-sex or platonic relationships in cinema. Furthermore, the movies included in our dataset are sometimes added due to public suggestions. As a result, the movies included in the dataset are more likely to be well-known movies, or movies popular from countries of the contributors. So, the results may not generalize to the population of all global movies. If we were to further our analysis we would like to work with a more random dataset of Hollywood movies that included a greater variety of relationships, including same-sex romantic relationships.
+
+## Conclusions
+
+Our study highlights age disparities within the realm of Hollywood romance, with male actors being typically older than their female counterparts. We found strong evidence that the population mean difference between male and female actors is greater than zero. Our results only generalize to movies similar to the ones submitted to the dataset, because the selected movies were not a random sample. We cannot infer causality because this was an observational study, not an experiment where we controlled certain variables. Nevertheless, our finding aligns with the common perception that it is more acceptable to pair an older man with a younger woman in a romantic relationship, rather than the other way around. Adding more same-sex romantic relationships could help future research compare the age gaps
